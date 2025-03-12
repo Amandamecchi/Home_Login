@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import styles from "./styles";
 
 export default function Detalhes() {
     const route = useRoute();
@@ -9,7 +8,7 @@ export default function Detalhes() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.titulo}>Tela de Detalhes</Text>
+            <Text style={styles.titulo}> Detalhes</Text>
             <Text style={styles.texto}>Texto salvo: {textoRecebido}</Text>
         </View>
     );

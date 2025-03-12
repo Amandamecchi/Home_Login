@@ -4,28 +4,45 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 
-const Texto = ({ title, text, color }) => (
-    <Text style={[styles.text, { color }]}>{title}: {text || "Nenhum texto salvo"}</Text>
+const TextoExibido = ({ titulo, texto, cor }) => (
+    <Text style={[styles.texto, { color: cor }]}>
+        {titulo}: {texto || "Nenhum texto salvo"}
+    </Text>
 );
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    const [text, setText] = useState("");
-    const [persistedText, setPersistedText] = useState("");
+    const [texto, setText] = useState("");
+    const [textoSalvo, setTextoSalvo] = useState("");
 
 
     useEffect(() => {
-        const loadPersistedText = async () => {
-            const savedText = await SecureStore.getItemAsync("persistedText");
-            if (savedText) setPersistedText(savedText);
-        };
-        loadPersistedText();
-    }, []);
+carregarTexto();
+}, []);
 
-    const saveText = async () => {
-        await SecureStore.setItemAsync("persistedText", text);
-        setPersistedText(text);
-    };
+        };
+async function carregarTexto() {
+    const textoPersistido = await AsyncStorage.getItem("texto");
+    if (textoPersistido) {
+        setTextoSalvo(textoPersistido);
+    } 
+}
+
+
+async function salvarTexto() {
+    if (!texto.trim()) { /* trim é pra quando o usuário não digitou nada válido, se tiver ""*/ 
+        return alert("Digite algo para salvar");
+    }
+
+    await AsyncStorage.setItem("texto", texto);
+    setTextoSalvo(texto);
+    setTexto("");
+
+    async function limparTexto() {
+        await AsyncStorage.removeItem("texto");
+        setTextoSalvo("");
+        alert("Texto removido");
+    }
 
     return (
  <View style={styles.container}>
