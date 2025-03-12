@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet} from "react-native";
-import * as SecureStore from "expo-secure-store";
+import React from "react";
+import { View, Text } from "react-native";
+import { useRoute } from "@react-navigation/native";
+import styles from "./styles";
 
-export default function DetalhesScreen({ route }) {
-    const { persistedText: routePersistedText } = route.params || {};
-    const [persistedText, setPersistedText] = useState(routePersistedText || "nenhum texto para salvar");
+export default function Detalhes() {
+    const route = useRoute();
+    const textoRecebido = route.params?.textoSalvo || "Nenhum texto salvo";
 
-    useEffect(() => {
-        const loadPersistedText = async () => {
-            const savedText = await SecureStore.getItemAsync("persistedText");
-            if (savedText) setPersistedText(savedText);
-        };
-        loadPersistedText();
-    }, []);
-    
-return (
-    <View style={styles.container}>
-        <Text style={styles.titulo}>Detalhes</Text>
-        <Text style={styles.textoVermelho}>Sem persistência: {textoNaoPersistido || "Nenhum texto salvo"}</Text>
-        <Text style={styles.textoVerde}>Persistência: {textoPersistido}</Text>
-    </View>
-);
+    return (
+        <View style={styles.container}>
+            <Text style={styles.titulo}>Tela de Detalhes</Text>
+            <Text style={styles.texto}>Texto salvo: {textoRecebido}</Text>
+        </View>
+    );
+}
+
 
 const styles = StyleSheet.create({
     container: {
