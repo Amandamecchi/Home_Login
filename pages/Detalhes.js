@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet} from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 export default function DetalhesScreen({ route }) {
@@ -7,11 +7,13 @@ export default function DetalhesScreen({ route }) {
     const [persistedText, setPersistedText] = useState(routePersistedText || "nenhum texto para salvar");
 
     useEffect(() => {
-        SecureStore.getItemAsync("persistedText").then((text) => {
-            if (text) setPersistedText(text);
-        });
+        const loadPersistedText = async () => {
+            const savedText = await SecureStore.getItemAsync("persistedText");
+            if (savedText) setPersistedText(savedText);
+        };
+        loadPersistedText();
     }, []);
-}
+    
 return (
     <View style={styles.container}>
         <Text style={styles.titulo}>Detalhes</Text>
